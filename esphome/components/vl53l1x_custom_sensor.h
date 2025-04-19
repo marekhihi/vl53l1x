@@ -1,28 +1,19 @@
-#include "esphome.h"
-#include "VL53L1X.h"  // Jeśli używasz tej biblioteki, zaimportuj ją.
+#ifndef VL53L1X_CUSTOM_SENSOR_H
+#define VL53L1X_CUSTOM_SENSOR_H
 
-class VL53L1XCustomSensor : public PollingComponent, public Sensor {
- public:
-  VL53L1XCustomSensor() : PollingComponent(3000) {}  // Odświeżanie co 3 sekundy
+#include "esphome.h"
+
+class VL53L1XCustomSensor : public PollingComponent {
+public:
+  VL53L1XCustomSensor() : PollingComponent(1000) {}
 
   void setup() override {
-    // Inicjalizacja czujnika, np.:
-    if (!vl53l1x.begin()) {
-      ESP_LOGE("VL53L1X", "Czujnik nie został wykryty!");
-    }
+    // Inicjalizacja czujnika
   }
 
   void update() override {
-    // Pobranie odczytu z czujnika
-    uint16_t distance = vl53l1x.readRangeSingleMillimeters();
-    if (vl53l1x.timeoutOccurred()) {
-      ESP_LOGW("VL53L1X", "Czas oczekiwania na dane przekroczony!");
-      return;
-    }
-    // Zwrócenie odczytu jako stan czujnika
-    publish_state(distance);
+    // Aktualizacja danych z czujnika
   }
-
- private:
-  VL53L1X vl53l1x;  // Obiekt czujnika VL53L1X
 };
+
+#endif // VL53L1X_CUSTOM_SENSOR_H
